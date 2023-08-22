@@ -14,11 +14,11 @@ services:
   backend:
     image: veronikalapteva/kittygram_backend
     env_file: .env
-    depends_on:
-      - db
     volumes:
       - static:/backend_static
       - media:/app/media
+    depends_on:
+      - db
   frontend:
     env_file: .env
     image: veronikalapteva/kittygram_frontend
