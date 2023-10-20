@@ -1,8 +1,8 @@
 # Проект Kittygram
-Проект Kittygram позволяет регистрироваться на сайте ***https://kittygramlbee.chickenkiller.com***, входить под своим аккаунтом, добавлять, редактировать и удалять информацию по котикам (фотография, год рождения, цвет кота, умения), а также просматривать записи других пользователей.
+Проект Kittygram позволяет регистрироваться на сайте, входить под своим аккаунтом, добавлять, редактировать и удалять информацию по котикам (фотография, год рождения, цвет кота, умения), а также просматривать записи других пользователей.
 
 ## Технологии проекта
-Python 3.10, Django3, Nginx, Gunicorn, React, Django REST framework, Certbot, Docker
+Python 3.10, Django3, Nginx, Gunicorn, Django REST framework, Certbot, Docker
 
 ## Как запустить проект на сервере:
  - Клонируем проект https://github.com/VeronikaLapteva/kittygram_final.git
@@ -16,13 +16,21 @@ Python 3.10, Django3, Nginx, Gunicorn, React, Django REST framework, Certbot, Do
    ```
    sudo nano /etc/nginx/sites-enabled/default
    ```
+ - Проверияем корректность настроек Nginx:
+   ```
+   sudo nginx -t
+   ```
+ - Перезапускаем Nginx:
+   ```
+   sudo service nginx reload
+   ```
  - Устанавливаем Cerbot и получаем SSL-сертификат
    ```
    sudo apt install snapd
    sudo certbot --nginx
    ```
 - Копируем файлы docker-compose.yml и .env (создаем и заполняем по примеру показанному в файле .env.example) в папку проекта kittygram
-- Запускаем прооет на сервере в контейнерах
+- Запускаем Docker Compose на сервере в режиме демона
   ```
   sudo docker compose -f docker-compose.yml up -d
   ```
@@ -30,7 +38,12 @@ Python 3.10, Django3, Nginx, Gunicorn, React, Django REST framework, Certbot, Do
   ```
   sudo docker compose -f docker-compose.yml ps
    ```
-- Проверяем доступность приложения в браузере по ссылке  ***https://kittygramlbee.chickenkiller.com***, регистрируемся и добавляем новых котиков
+- Выполните миграции, соберите статические файлы бэкенда и скопируйте их в /backend_static/static/:
+  ```
+  sudo docker compose -f docker-compose.yml exec backend python manage.py migrate
+  sudo docker compose -f docker-compose.yml exec backend python manage.py collectstatic
+  sudo docker compose -f docker-compose.yml exec backend cp -r /app/collected_static/. /backend_static/static/ 
+  ```
 
 ## Автор
-Лаптева Вероника  
+* [Veronika_Lapteva](https://github.com/VeronikaLapteva)
